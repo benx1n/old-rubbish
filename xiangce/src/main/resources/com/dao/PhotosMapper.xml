@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.PhotosDao">
+
+  <resultMap id="resultMap" type="com.entity.Photos">
+			<id column="id" property="id" />
+			<result column="image"  property="image" />
+			<result column="uid"  property="uid" />
+			<result column="name"  property="name" />
+			<result column="dis"  property="dis" />
+			<result column="createtime"  property="createtime" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+		id,
+		image,
+		uid,
+		name,
+		dis,
+		createtime
+  </sql>  
+  
+  <sql id="whereSqlModel">
+		<if test="id != null">
+		and	id = #{id}
+		</if>
+		<if test="image != null">
+		and	image = #{image}
+		</if>
+		<if test="uid != null">
+		and	uid = #{uid}
+		</if>
+		<if test="name != null">
+		and	name = #{name}
+		</if>
+		<if test="dis != null">
+		and	dis = #{dis}
+		</if>
+		<if test="createtime != null">
+		and	createtime = #{createtime}
+		</if>
+  </sql>
+  
+    <select id="search" parameterType="java.lang.String" resultMap="resultMap">
+    select <include refid="Base_Column_List"/> from  photos  where 
+    name like #{key} 
+  </select>
+  
+  <select id="getModel" parameterType="java.lang.Integer" resultMap="resultMap">
+    select <include refid="Base_Column_List"/> from  photos  where ID = #{id}
+  </select>
+  
+  <select id="getModelList" parameterType="java.util.HashMap" resultMap="resultMap">
+    select <include refid="Base_Column_List"/> from  photos  where 1=1 <include refid="whereSqlModel"/>
+  </select>
+  
+  <select id="getModelInList" parameterType="java.util.HashMap" resultMap="resultMap">
+    select <include refid="Base_Column_List"/> from  photos 
+    where ID in 
+    <foreach item="id" index="index" collection="idList" open="(" separator="," close=")">
+#{id}    </foreach>
+  </select>
+  
+   <!-- 查询一组实体的数量 -->
+  <select id="getModelListCount" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+   select count(1) from  photos   where 1=1 <include refid="whereSqlModel"/> 
+  </select>
+  
+  
+   <!--插入实体，如果字段为空则插入null-->
+  <insert id="insertModel" parameterType="com.entity.Photos">
+    insert into photos
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			image,
+			uid,
+			name,
+			dis,
+			createtime,
+    </trim>  
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+		   #{id},
+		   #{image},
+		   #{uid},
+		   #{name},
+		   #{dis},
+		   #{createtime},
+    </trim>
+  </insert>
+  
+  <!--插入不为空的字段，为空字段默认数据库的默认值-->
+  <insert id="insertModelWithoutNull" parameterType="com.entity.Photos">
+    insert into photos
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+		  <if test="id != null">
+			id,
+		  </if>		
+		  <if test="image != null">
+			image,
+		  </if>		
+		  <if test="uid != null">
+			uid,
+		  </if>		
+		  <if test="name != null">
+			name,
+		  </if>		
+		  <if test="dis != null">
+			dis,
+		  </if>		
+		  <if test="createtime != null">
+			createtime,
+		  </if>		
+    </trim>  
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="image != null">
+				#{image},
+			</if>
+			<if test="uid != null">
+				#{uid},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="dis != null">
+				#{dis},
+			</if>
+			<if test="createtime != null">
+				#{createtime},
+			</if>
+    </trim>
+  </insert>
+  
+   <update id="updateModel" parameterType="com.entity.Photos">
+    update photos 
+    <set>
+			id = #{id},
+			image = #{image},
+			uid = #{uid},
+			name = #{name},
+			dis = #{dis},
+			createtime = #{createtime},
+   
+    </set>
+     where id = #{id}
+  </update>   
+  
+  <update id="updateModelWithoutNull" parameterType="com.entity.Photos">
+    update photos 
+    <set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="image != null">
+				image = #{image},
+			</if>
+			<if test="uid != null">
+				uid = #{uid},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="dis != null">
+				dis = #{dis},
+			</if>
+			<if test="createtime != null">
+				createtime = #{createtime},
+			</if>
+   
+    </set>
+     where id = #{id}
+  </update>   
+  
+  
+   <!-- 批量更新实体 传入一组实体，分别根据主键作为查询条件-->
+    <update id="batchUpdateModel" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update photos 
+            
+             <set>
+        			id = #{id},
+        			image = #{image},
+        			uid = #{uid},
+        			name = #{name},
+        			dis = #{dis},
+        			createtime = #{createtime},
+            </set>
+            where  ID = #{item.id},
+        </foreach>
+    </update>
+    
+    
+  
+  
+  <delete id="deleteModelByPk" parameterType="java.lang.Integer">
+    delete from photos
+    where ID = #{id}
+  </delete>    
+  
+  
+   <delete id="deleteModelList" parameterType="java.util.HashMap">
+    delete from photos
+    where 1=1 
+    <include refid="whereSqlModel"/>
+  </delete>
+  
+   <!-- 批量删除实体 in 根据主键-->
+    <delete id="deleteModelByIds" parameterType="java.util.Set">
+        delete from photos where ID in 
+        <foreach item="id" index="index" collection="collection" open="(" separator="," close=")">
+           #{id},
+        </foreach>
+    </delete>
+</mapper>

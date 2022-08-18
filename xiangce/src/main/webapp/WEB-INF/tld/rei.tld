@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+    <description>JSTL 1.1 functions library</description>
+    <display-name>JSTL functions temp</display-name>
+    <tlib-version>1.1</tlib-version>
+    <short-name>rei</short-name>
+    <uri>http://java.sun.com/jsp/jstl/functionss</uri>
+
+
+    <function>
+        <description>根据用户id获取用户</description>
+        <name>getUser</name>
+        <function-class>com.utils.TldUtil</function-class>
+        <function-signature>com.entity.User getUser(java.lang.Integer)</function-signature>
+        <example>${tld:getUser()}</example>
+    </function>
+    <function>
+        <description>根据用户id获取用户昵称</description>
+        <name>getUsername</name>
+        <function-class>com.utils.TldUtil</function-class>
+        <function-signature>java.lang.String getUsername(java.lang.Integer)</function-signature>
+        <example>${tld:getUsername()}</example>
+    </function>
+
+
+
+    <function>
+        <description>获取时间为当前时间多少分钟或者多少小时前</description>
+        <name>getDatePoor</name>
+        <function-class>com.utils.TldUtil</function-class>
+        <function-signature>java.lang.String getDatePoor(java.util.Date)</function-signature>
+        <example>${tld:getDatePoor()}</example>
+    </function>
+
+    <function>
+        <description>获取相册</description>
+        <name>getById</name>
+        <function-class>com.utils.TldUtil</function-class>
+        <function-signature>com.entity.Photos getById(java.lang.Integer)</function-signature>
+
+    </function>
+
+
+</taglib>
